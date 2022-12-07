@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { of } from 'rxjs';
 import Validation from './utils/validation';
-// import Validation from './utils/validation';
+import { RandomGenerator } from './utils/random-generator';
 
 @Component({
   selector: 'app-password-generator',
@@ -10,10 +10,12 @@ import Validation from './utils/validation';
   styleUrls: ['./password-generator.component.scss'],
 })
 export class PasswordGeneratorComponent implements OnInit {
-  text: String = '';
+  text: string = '';
   arrayOfConditions: any[] = [];
   form!: FormGroup;
   submitted:boolean = false;
+  passLength!: string;
+  newPassword: string = '';
 
   getListCheckboxes() {
     return [
@@ -66,13 +68,25 @@ export class PasswordGeneratorComponent implements OnInit {
     if (this.form.invalid) {
       console.log('form invalido');
     }
-    console.log(this.text);
+
+    //const useChars: boolean =  
+    console.log(this.chkConditionsFormArray.value);
+
+    
+    const randomPass:RandomGenerator = new RandomGenerator(
+        parseInt(this.passLength),
+        this.chkConditionsFormArray.value[0], // text
+        this.chkConditionsFormArray.value[1], // number 
+        this.chkConditionsFormArray.value[2], // symbol
+      
+    );
+
+    this.newPassword = randomPass.password;
+    
   }
 
   onCheckBoxTick(event: any, formField: any, key: any) {
     console.log(key);
-    console.log(event, formField, formField.value);  
-
   }
 
 }
